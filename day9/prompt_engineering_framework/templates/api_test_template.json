@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "name": "api_test_template",
+    "version": "1.0.0",
+    "description": "Template created via API",
+    "author": null,
+    "created_at": "2025-06-17 22:19:35.501296",
+    "updated_at": "2025-06-17 22:19:35.501298",
+    "tags": []
+  },
+  "prompt": "API test: {message}",
+  "variables": {
+    "message": {
+      "type": "string",
+      "required": true,
+      "default": null,
+      "values": null,
+      "min_length": null,
+      "max_length": null,
+      "pattern": null,
+      "description": null
+    }
+  },
+  "expected_format": "text",
+  "system_prompt": null,
+  "examples": []
+}
