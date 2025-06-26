@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Verification Service Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .demo-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .result {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .status-approved { border-left: 4px solid #28a745; }
+        .status-rejected { border-left: 4px solid #dc3545; }
+        .status-review { border-left: 4px solid #ffc107; }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Content Verification Service Demo</h1>
+        <p>Interactive demo of the AI-powered content verification system</p>
+
+        <div class="demo-section">
+            <h3>1. Service Health Check</h3>
+            <button onclick="checkHealth()">Check Health</button>
+            <div id="healthResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="demo-section">
+            <h3>2. Single Question Verification</h3>
+            <textarea id="questionInput" placeholder="Enter question JSON...">{
+  "id": "demo-q1",
+  "question": "What is the capital of France?",
+  "options": ["London", "Berlin", "Paris", "Madrid"],
+  "correctAnswer": 2,
+  "topic": "Geography",
+  "difficulty": "easy"
+}</textarea>
+            <br>
+            <button onclick="verifySingle()">Verify Question</button>
+            <div id="singleResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="demo-section">
+            <h3>3. Batch Verification</h3>
+            <button onclick="verifyBatch()">Verify Sample Batch</button>
+            <div id="batchResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="demo-section">
+            <h3>4. Async Verification</h3>
+            <button onclick="verifyAsync()">Start Async Verification</button>
+            <button onclick="checkJobStatus()" disabled id="statusBtn">Check Job Status</button>
+            <div id="asyncResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3003/api/verification';
+        let currentJobId = null;
+
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method,
+                    headers: { 'Content-Type': 'application/json' }
+                };
+                if (data) options.body = JSON.stringify(data);
+                
+                const response = await fetch(`${API_BASE}${endpoint}`, options);
+                return await response.json();
+            } catch (error) {
+                return { error: error.message };
+            }
+        }
+
+        function showResult(elementId, data, loading = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            
+            if (loading) {
+                element.innerHTML = '<div class="loading"></div> Processing...';
+            } else {
+                element.innerHTML = JSON.stringify(data, null, 2);
+                
+                // Add status styling
+                element.className = 'result';
+                if (data.data && data.data.status) {
+                    element.classList.add(`status-${data.data.status}`);
+                }
+            }
+        }
+
+        async function checkHealth() {
+            showResult('healthResult', null, true);
+            const result = await apiCall('/health');
+            showResult('healthResult', result);
+        }
+
+        async function verifySingle() {
+            showResult('singleResult', null, true);
+            
+            try {
+                const content = JSON.parse(document.getElementById('questionInput').value);
+                const result = await apiCall('/verify', 'POST', {
+                    questionId: content.id,
+                    content: content
+                });
+                showResult('singleResult', result);
+            } catch (error) {
+                showResult('singleResult', { error: 'Invalid JSON format' });
+            }
+        }
+
+        async function verifyBatch() {
+            showResult('batchResult', null, true);
+            
+            const sampleQuestions = [
+                {
+                    id: "q1",
+                    question: "What is the capital of France?",
+                    options: ["London", "Berlin", "Paris", "Madrid"],
+                    correctAnswer: 2,
+                    topic: "Geography",
+                    difficulty: "easy"
+                },
+                {
+                    id: "q2",
+                    question: "What is 2 + 2?",
+                    options: ["3", "4", "5", "6"],
+                    correctAnswer: 1,
+                    topic: "Mathematics",
+                    difficulty: "easy"
+                }
+            ];
+            
+            const result = await apiCall('/verify/batch', 'POST', {
+                questions: sampleQuestions
+            });
+            showResult('batchResult', result);
+        }
+
+        async function verifyAsync() {
+            showResult('asyncResult', null, true);
+            
+            const sampleQuestion = {
+                id: "async-q1",
+                question: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris", "Madrid"],
+                correctAnswer: 2,
+                topic: "Geography",
+                difficulty: "easy"
+            };
+            
+            const result = await apiCall('/verify/async', 'POST', {
+                questionId: sampleQuestion.id,
+                content: sampleQuestion
+            });
+            
+            if (result.jobId) {
+                currentJobId = result.jobId;
+                document.getElementById('statusBtn').disabled = false;
+            }
+            
+            showResult('asyncResult', result);
+        }
+
+        async function checkJobStatus() {
+            if (!currentJobId) return;
+            
+            const result = await apiCall(`/job/${currentJobId}`);
+            showResult('asyncResult', result);
+        }
+
+        // Initialize health check on page load
+        window.onload = () => checkHealth();
+    </script>
+</body>
+</html> 
