@@ -1,0 +1,16 @@
+2025-07-11 17:12:03.935 | INFO     | app.services.provider_manager:add_provider:28 - Added provider: mock-primary (primary: False)
+2025-07-11 17:12:03.936 | INFO     | app.services.provider_manager:add_provider:28 - Added provider: mock-fallback (primary: False)
+2025-07-11 17:12:03.936 | INFO     | app.services.ai_service:initialize_providers:28 - AI Service initialized with providers
+2025-07-11 17:24:12.093 | INFO     | app.services.provider_manager:add_provider:28 - Added provider: mock-primary (primary: False)
+2025-07-11 17:24:12.093 | INFO     | app.services.provider_manager:add_provider:28 - Added provider: mock-fallback (primary: False)
+2025-07-11 17:24:12.093 | INFO     | app.services.ai_service:initialize_providers:28 - AI Service initialized with providers
+2025-07-11 17:26:03.017 | INFO     | app.testing.base_test_runner:run_suite:49 - Starting test suite: AI_Test_Suite
+2025-07-11 17:26:03.018 | INFO     | app.testing.ai_test_suite:setup:17 - Setting up AI test environment
+2025-07-11 17:26:03.018 | INFO     | app.services.ai_service:generate_text:31 - Generating text for prompt: "Explain artificial intelligence in simple terms"
+2025-07-11 17:26:03.018 | INFO     | app.services.ai_service:generate_text:31 - Generating text for prompt: "Describe machine learning algorithms"
+2025-07-11 17:26:03.121 | INFO     | app.services.provider_manager:generate_text:40 - Successfully used primary provider: mock-primary
+2025-07-11 17:26:03.121 | INFO     | app.services.ai_service:generate_text:35 - Text generated successfully using mock-primary
+2025-07-11 17:26:03.122 | INFO     | app.services.provider_manager:generate_text:40 - Successfully used primary provider: mock-primary
+2025-07-11 17:26:03.122 | INFO     | app.services.ai_service:generate_text:35 - Text generated successfully using mock-primary
+2025-07-11 17:26:03.122 | INFO     | app.testing.ai_test_suite:teardown:22 - Tearing down AI test environment
+2025-07-11 17:26:03.122 | INFO     | app.testing.base_test_runner:run_suite:85 - Test suite completed: AI_Test_Suite
