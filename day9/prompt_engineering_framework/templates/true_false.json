@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "name": "true_false",
+    "version": "1.0.0",
+    "description": "Template for generating true/false questions",
+    "author": "AI Engineering Team",
+    "tags": ["quiz", "true-false", "education"]
+  },
+  "prompt": "Generate a {difficulty} level true/false question about {subject} on the topic of {topic}. The statement should be clear and unambiguous. Format the response as JSON with fields: statement, correct_answer (boolean), explanation.",
+  "variables": {
+    "difficulty": {
+      "type": "enum",
+      "values": ["easy", "medium", "hard"],
+      "required": true,
+      "description": "Difficulty level of the question"
+    },
+    "subject": {
+      "type": "string",
+      "required": true,
+      "min_length": 2,
+      "max_length": 50,
+      "description": "Subject area for the question"
+    },
+    "topic": {
+      "type": "string",
+      "required": true,
+      "min_length": 3,
+      "max_length": 100,
+      "description": "Specific topic within the subject"
+    }
+  },
+  "expected_format": "json",
+  "system_prompt": "You are an expert educational content creator. Generate clear, factual true/false statements.",
+  "examples": [
+    {
+      "variables": {
+        "difficulty": "easy",
+        "subject": "Mathematics",
+        "topic": "Prime Numbers"
+      },
+      "expected_output": "JSON formatted true/false question"
+    }
+  ]
+}
