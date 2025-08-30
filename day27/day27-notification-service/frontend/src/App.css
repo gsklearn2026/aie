@@ -1,0 +1,256 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.App-header {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.connection-status {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.connected {
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.disconnected {
+  color: #f87171;
+  font-weight: bold;
+}
+
+.App-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.stats-section, .actions-section, .notifications-section {
+  background: rgba(255, 255, 255, 0.1);
+  margin: 2rem 0;
+  padding: 2rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stats-section h2, .actions-section h2, .notifications-section h2 {
+  margin-top: 0;
+  font-size: 1.8rem;
+  color: #fbbf24;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  color: #e5e7eb;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0;
+  color: #fbbf24;
+}
+
+.stat-number.unread {
+  color: #f87171;
+}
+
+.stat-number.read {
+  color: #4ade80;
+}
+
+.actions-section {
+  text-align: center;
+}
+
+.action-button {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.action-button:active {
+  transform: translateY(0);
+}
+
+.notifications-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.notification-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.notification-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
+}
+
+.notification-item.unread {
+  border-left: 4px solid #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+}
+
+.notification-item.read {
+  opacity: 0.8;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.notification-header h4 {
+  margin: 0;
+  color: #fbbf24;
+  font-size: 1.2rem;
+}
+
+.notification-time {
+  font-size: 0.9rem;
+  color: #d1d5db;
+}
+
+.notification-message {
+  margin: 0.5rem 0;
+  color: #e5e7eb;
+  line-height: 1.5;
+}
+
+.notification-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.notification-type {
+  background: rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.notification-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.notification-status.pending {
+  background: rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+}
+
+.notification-status.sent {
+  background: rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.notification-status.failed {
+  background: rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.notification-status.read {
+  background: rgba(156, 163, 175, 0.3);
+  color: #9ca3af;
+}
+
+.no-notifications {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #d1d5db;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 2rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-button {
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+  
+  .notification-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .notification-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
