@@ -1,0 +1,8 @@
+environment: production
+database_url: postgresql://quiz_user:quiz_pass@prod-db:5432/quiz_platform_prod
+gemini_api_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent
+api_rate_limit: 1000
+debug_mode: false
+health_check_timeout: 60
+deployment_strategy: blue_green
+replicas: 5

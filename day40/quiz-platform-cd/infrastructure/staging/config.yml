@@ -1,0 +1,8 @@
+environment: staging
+database_url: postgresql://quiz_user:quiz_pass@staging-db:5432/quiz_platform_staging
+gemini_api_url: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent
+api_rate_limit: 100
+debug_mode: true
+health_check_timeout: 30
+deployment_strategy: rolling
+replicas: 2
