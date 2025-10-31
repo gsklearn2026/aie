@@ -1,0 +1,5 @@
+day19/performance-analytics-engine/backend/.env
+day19/performance-analytics-engine/backend/app/database.py
+day19/performance-analytics-engine/frontend/node_modules/.cache/default-development/0.pack
+day19/performance-analytics-engine/frontend/node_modules/.cache/default-development/index.pack
+day19/performance-analytics-engine/start.sh
