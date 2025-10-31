@@ -1,0 +1,216 @@
+name: CD Pipeline - Backend Services
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types: [completed]
+    branches: [main, develop]
+
+env:
+  DOCKER_REGISTRY: ghcr.io
+  IMAGE_NAME: quiz-platform-backend
+
+jobs:
+  deploy-staging:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment: staging
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.DOCKER_REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=sha,prefix={{branch}}-
+          
+    - name: Build and push Docker image
+      id: build
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        
+    - name: Deploy to Staging
+      run: |
+        echo "🚀 Deploying to staging environment..."
+        # Simulate deployment
+        docker run --rm -d \
+          --name quiz-backend-staging \
+          -p 8001:8000 \
+          -e DATABASE_URL="${{ secrets.STAGING_DB_URL }}" \
+          -e GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}" \
+          -e ENVIRONMENT=staging \
+          ${{ steps.meta.outputs.tags }}
+          
+    - name: Health Check - Staging
+      run: |
+        echo "🏥 Running health checks..."
+        sleep 10  # Wait for container to start
+        for i in {1..30}; do
+          if curl -f http://localhost:8001/health; then
+            echo "✅ Health check passed"
+            break
+          fi
+          echo "⏳ Waiting for health check... ($i/30)"
+          sleep 2
+        done
+        
+    - name: Run Integration Tests
+      run: |
+        echo "🧪 Running integration tests against staging..."
+        python -m pytest backend/tests/integration/ --staging-url=http://localhost:8001
+
+  deploy-production:
+    needs: deploy-staging
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Blue-Green Deployment Setup
+      run: |
+        echo "🔵 Setting up blue-green deployment..."
+        # Create deployment manifest
+        cat > deployment-manifest.yml << 'DEPLOY_EOF'
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: quiz-backend-green
+          labels:
+            app: quiz-backend
+            version: green
+        spec:
+          replicas: 5
+          selector:
+            matchLabels:
+              app: quiz-backend
+              version: green
+          template:
+            metadata:
+              labels:
+                app: quiz-backend
+                version: green
+            spec:
+              containers:
+              - name: quiz-backend
+                image: ${{ needs.deploy-staging.outputs.image-tag }}
+                ports:
+                - containerPort: 8000
+                env:
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: quiz-secrets
+                      key: database-url
+                - name: GEMINI_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: quiz-secrets
+                      key: gemini-api-key
+                livenessProbe:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                readinessProbe:
+                  httpGet:
+                    path: /ready
+                    port: 8000
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+        DEPLOY_EOF
+        
+    - name: Deploy Green Environment
+      run: |
+        echo "🟢 Deploying to green environment..."
+        # Simulate Kubernetes deployment
+        docker run --rm -d \
+          --name quiz-backend-green \
+          -p 8002:8000 \
+          -e DATABASE_URL="${{ secrets.PROD_DB_URL }}" \
+          -e GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}" \
+          -e ENVIRONMENT=production \
+          ${{ needs.deploy-staging.outputs.image-tag }}
+          
+    - name: Database Migration
+      run: |
+        echo "📊 Running database migrations..."
+        python backend/migrations/migrate.py --environment=production --dry-run=false
+        
+    - name: Health Check - Production
+      id: health-check
+      run: |
+        echo "🏥 Running production health checks..."
+        sleep 15
+        for i in {1..60}; do
+          if curl -f http://localhost:8002/health && \
+             curl -f http://localhost:8002/ready; then
+            echo "✅ Production health check passed"
+            echo "healthy=true" >> $GITHUB_OUTPUT
+            break
+          fi
+          echo "⏳ Production health check... ($i/60)"
+          sleep 2
+        done
+        
+    - name: Traffic Switch
+      if: steps.health-check.outputs.healthy == 'true'
+      run: |
+        echo "🔄 Switching traffic to green environment..."
+        # Simulate load balancer switch
+        echo "Traffic successfully switched to new version"
+        
+    - name: Cleanup Blue Environment
+      if: steps.health-check.outputs.healthy == 'true'
+      run: |
+        echo "🧹 Cleaning up old blue environment..."
+        docker stop quiz-backend-blue || true
+        docker rm quiz-backend-blue || true
+        
+  rollback:
+    needs: [deploy-staging, deploy-production]
+    if: failure()
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Emergency Rollback
+      run: |
+        echo "🚨 EMERGENCY ROLLBACK TRIGGERED"
+        echo "🔙 Rolling back to previous stable version..."
+        # Simulate rollback
+        docker stop quiz-backend-green || true
+        docker rm quiz-backend-green || true
+        echo "✅ Rollback completed"
+        
+    - name: Notify Team
+      run: |
+        echo "📢 Notifying development team of rollback..."
+        # In real scenario, this would send Slack/email notifications
+        echo "Rollback notification sent"

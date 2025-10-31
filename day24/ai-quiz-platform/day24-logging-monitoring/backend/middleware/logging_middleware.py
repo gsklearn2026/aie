@@ -57,7 +57,10 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                                 user_id: str, session_id: str):
         logger.info(
             "Request started",
+<<<<<<< HEAD
             event="request_start",
+=======
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
             request_id=request_id,
             user_id=user_id,
             session_id=session_id,
@@ -72,7 +75,10 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                                   process_time: float):
         logger.info(
             "Request completed",
+<<<<<<< HEAD
             event="request_complete",
+=======
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
             request_id=request_id,
             user_id=user_id,
             session_id=session_id,
@@ -87,7 +93,10 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                                process_time: float):
         logger.error(
             "Request failed",
+<<<<<<< HEAD
             event="request_error",
+=======
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
             request_id=request_id,
             user_id=user_id,
             session_id=session_id,

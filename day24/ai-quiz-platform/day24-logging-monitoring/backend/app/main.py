@@ -1,7 +1,11 @@
 from fastapi import FastAPI, Request, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+<<<<<<< HEAD
 # from middleware.logging_middleware import LoggingMiddleware
+=======
+from middleware.logging_middleware import LoggingMiddleware
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
 from services.logging_service import logging_service
 from services.metrics_service import metrics_service
 from config.logging_config import LoggingConfig
@@ -44,25 +48,36 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
+<<<<<<< HEAD
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+=======
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3002", "http://127.0.0.1:3002"],
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Add logging middleware
+<<<<<<< HEAD
 # app.add_middleware(LoggingMiddleware)
+=======
+app.add_middleware(LoggingMiddleware)
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
 
 @app.get("/")
 async def root():
     """Health check endpoint"""
     return {"message": "AI Quiz Platform Logging Service", "status": "healthy"}
 
+<<<<<<< HEAD
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
 
+=======
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
 @app.post("/api/v1/log")
 async def log_event(event_data: Dict[str, Any], background_tasks: BackgroundTasks):
     """Log a custom event"""
@@ -82,7 +97,11 @@ async def log_event(event_data: Dict[str, Any], background_tasks: BackgroundTask
         return {"status": "logged", "event_id": event_data.get("event_id")}
         
     except Exception as e:
+<<<<<<< HEAD
         logger.error("Failed to log event", error_msg=str(e))
+=======
+        logger.error("Failed to log event", error=str(e))
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
         raise HTTPException(status_code=500, detail="Failed to log event")
 
 @app.get("/api/v1/logs/search")
@@ -101,7 +120,11 @@ async def search_logs(
         # Search logs
         logs = await logging_service.search_logs(query, start_dt, end_dt, limit)
         
+<<<<<<< HEAD
         logger.info("Log search performed", search_query=query, result_count=len(logs))
+=======
+        logger.info("Log search performed", query=query, result_count=len(logs))
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
         
         return {
             "logs": logs,
@@ -110,7 +133,11 @@ async def search_logs(
         }
         
     except Exception as e:
+<<<<<<< HEAD
         logger.error("Log search failed", error_msg=str(e))
+=======
+        logger.error("Log search failed", error=str(e))
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
         raise HTTPException(status_code=500, detail="Log search failed")
 
 @app.get("/api/v1/metrics/summary")
@@ -141,7 +168,11 @@ async def get_metrics_summary():
         }
         
     except Exception as e:
+<<<<<<< HEAD
         logger.error("Failed to get metrics summary", error_msg=str(e))
+=======
+        logger.error("Failed to get metrics summary", error=str(e))
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
         raise HTTPException(status_code=500, detail="Failed to get metrics")
 
 @app.post("/api/v1/quiz/submit")
@@ -185,7 +216,11 @@ async def submit_quiz_answer(
             ai_result = response.text[:200]  # Truncate for demo
             
         except Exception as ai_error:
+<<<<<<< HEAD
             logger.warning("AI inference failed, using fallback", error_msg=str(ai_error))
+=======
+            logger.warning("AI inference failed, using fallback", error=str(ai_error))
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
             ai_result = "Answer evaluation unavailable"
         
         ai_duration = time.perf_counter() - ai_start
@@ -239,7 +274,11 @@ async def submit_quiz_answer(
             "duration_ms": round(duration * 1000, 2)
         })
         
+<<<<<<< HEAD
         logger.error("Quiz submission failed", error_msg=str(e))
+=======
+        logger.error("Quiz submission failed", error=str(e))
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
         raise HTTPException(status_code=500, detail="Quiz submission failed")
 
 if __name__ == "__main__":

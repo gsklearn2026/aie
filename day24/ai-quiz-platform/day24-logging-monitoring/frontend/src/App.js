@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+<<<<<<< HEAD
 import { Layout, Card, Row, Col, Statistic, Table, Input, Button, DatePicker, Alert, Space } from 'antd';
+=======
+import { Layout, Card, Row, Col, Statistic, Table, Input, Button, DatePicker, Alert } from 'antd';
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { SearchOutlined, ReloadOutlined, DashboardOutlined } from '@ant-design/icons';
 import './App.css';
 
+<<<<<<< HEAD
+=======
+// Backend API configuration
+const API_BASE_URL = 'http://localhost:8080';
+
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
 const { Header, Content } = Layout;
 const { RangePicker } = DatePicker;
 
@@ -19,7 +29,11 @@ function App() {
   const fetchMetrics = async () => {
     try {
       setLoading(true);
+<<<<<<< HEAD
       const response = await axios.get('/api/v1/metrics/summary');
+=======
+      const response = await axios.get(`${API_BASE_URL}/api/v1/metrics/summary`);
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
       setMetrics(response.data);
       
       // Generate mock performance data for demo
@@ -42,7 +56,11 @@ function App() {
   const searchLogs = async (query = searchQuery) => {
     try {
       setLoading(true);
+<<<<<<< HEAD
       const response = await axios.get('/api/v1/logs/search', {
+=======
+      const response = await axios.get(`${API_BASE_URL}/api/v1/logs/search`, {
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
         params: { query, limit: 50 }
       });
       setLogs(response.data.logs);
@@ -63,7 +81,11 @@ function App() {
         answer: 'Paris'
       };
 
+<<<<<<< HEAD
       await axios.post('/api/v1/quiz/submit', testData, {
+=======
+      await axios.post(`${API_BASE_URL}/api/v1/quiz/submit`, testData, {
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
         headers: {
           'X-User-ID': 'demo_user_123',
           'X-Session-ID': `session_${Date.now()}`
@@ -238,7 +260,11 @@ function App() {
         {/* Log Search */}
         <Card title="Log Search & Analysis">
           <div style={{ marginBottom: '16px' }}>
+<<<<<<< HEAD
             <Space.Compact>
+=======
+            <Input.Group compact>
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
               <Input
                 style={{ width: '300px' }}
                 placeholder="Search logs (e.g., 'error', 'quiz_submission')"
@@ -252,7 +278,11 @@ function App() {
               <Button onClick={() => searchLogs('')} style={{ marginLeft: '8px' }}>
                 Show All
               </Button>
+<<<<<<< HEAD
             </Space.Compact>
+=======
+            </Input.Group>
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
           </div>
 
           <Table

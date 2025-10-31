@@ -1,0 +1,13 @@
+FROM mcr.microsoft.com/playwright/python:v1.47.0-jammy
+
+WORKDIR /app
+
+COPY tests/requirements-e2e.txt .
+RUN pip install -r requirements-e2e.txt
+
+# Install Playwright browsers
+RUN playwright install
+
+COPY tests/ ./tests/
+
+CMD ["pytest", "tests/", "-v", "--html=reports/e2e-report.html"]

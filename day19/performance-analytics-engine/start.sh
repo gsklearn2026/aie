@@ -21,7 +21,11 @@ cd ..
 # Set environment variables
 export DATABASE_URL="postgresql+asyncpg://postgres:password@localhost:5432/quiz_platform"
 export REDIS_URL="redis://localhost:6379/0"
+<<<<<<< HEAD
 export GEMINI_API_KEY="AIzaSyCbEp7_ZL5CuXGk30R4yQR-0_m4wIAEIvw"
+=======
+export GEMINI_API_KEY="Your key"
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
 
 # Start services with Docker Compose
 echo "🐳 Starting services with Docker..."

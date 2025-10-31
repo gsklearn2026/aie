@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  load-testing:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:8080"  # Dashboard
+      - "8089:8089"  # Locust Web UI
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - QUIZ_API_BASE_URL=http://quiz-api:8000
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    volumes:
+      - ../reports:/app/reports
+      - ../src:/app/src
+    networks:
+      - quiz-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - quiz-network
+
+  quiz-api:
+    image: quiz-platform:latest  # Assuming from previous lessons
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - quiz-network
+
+networks:
+  quiz-network:
+    driver: bridge

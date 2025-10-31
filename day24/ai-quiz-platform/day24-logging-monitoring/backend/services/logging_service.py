@@ -54,13 +54,21 @@ class LoggingService:
         if self.redis_client:
             await self._cache_log_entry(event_data)
         
+<<<<<<< HEAD
         logger.debug("Event logged", event=event_data.get("event"))
+=======
+        logger.debug("Event logged", event_type=event_data.get("event"))
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
     
     async def _log_to_file(self, event_data: Dict[str, Any]):
         """Write log entry to file"""
         log_entry = json.dumps(event_data) + "\n"
         
+<<<<<<< HEAD
         async with aiofiles.open("logs/app.log", "a") as f:
+=======
+        async with aiofiles.open("../logs/app.log", "a") as f:
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
             await f.write(log_entry)
     
     async def _log_to_elasticsearch(self, event_data: Dict[str, Any]):
@@ -135,6 +143,16 @@ class LoggingService:
             except Exception as e:
                 logger.error("Redis search failed", error=str(e))
         
+<<<<<<< HEAD
+=======
+        # Final fallback to file-based search
+        if not logs:
+            try:
+                logs = await self._search_in_file(query, limit)
+            except Exception as e:
+                logger.error("File-based search failed", error=str(e))
+        
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
         return logs
     
     async def get_metrics_summary(self) -> Dict[str, Any]:
@@ -170,6 +188,34 @@ class LoggingService:
                 logger.error("Failed to get metrics summary", error=str(e))
         
         return summary
+<<<<<<< HEAD
+=======
+    
+    async def _search_in_file(self, query: str, limit: int) -> List[Dict]:
+        """Search logs in the log file"""
+        logs = []
+        try:
+            async with aiofiles.open("../logs/app.log", "r") as f:
+                content = await f.read()
+                lines = content.strip().split('\n')
+                
+                # Parse each line as JSON and filter by query
+                for line in reversed(lines):  # Start from most recent
+                    if len(logs) >= limit:
+                        break
+                    try:
+                        log_entry = json.loads(line)
+                        # Simple text search in the entire log entry
+                        if not query or query.lower() in json.dumps(log_entry).lower():
+                            logs.append(log_entry)
+                    except json.JSONDecodeError:
+                        continue  # Skip invalid JSON lines
+                        
+        except Exception as e:
+            logger.error("Failed to read log file", error=str(e))
+        
+        return logs
+>>>>>>> 3cb0bb496e11cb6195a51dfec69cafd2b5fedeae
 
 # Global logging service instance
 logging_service = LoggingService()
