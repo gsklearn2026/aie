@@ -1,0 +1,29 @@
+# Logs
+*.log
+backend.log
+frontend.log
+
+# Environments
+venv/
+.venv/
+backend/venv/
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment variables
+.env
+
+# SQLite databases
+*.db
+*.sqlite3
+
+# Misc
+.DS_Store
+
