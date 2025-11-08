@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Python virtual environments
+venv/
+**/venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Pytest cache
+.pytest_cache/
+**/.pytest_cache/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

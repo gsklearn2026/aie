@@ -1,0 +1,108 @@
+.memory-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.alert-banner {
+  background: #ff6b6b;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  color: #667eea;
+  font-size: 1.8em;
+  font-weight: 700;
+}
+
+.endpoint-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.endpoint-item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.endpoint-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.endpoint-stats {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-btn {
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #667eea;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.action-btn.danger {
+  background: #ff6b6b;
+}
