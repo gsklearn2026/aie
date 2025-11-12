@@ -1,0 +1,15 @@
+# Dependencies
+frontend/node_modules/
+backend/venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Pytest cache
+backend/.pytest_cache/
+.pytest_cache/
+
+# IDE / tooling
+.vscode/
+.DS_Store
