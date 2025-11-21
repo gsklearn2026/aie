@@ -1,0 +1,261 @@
+.question-display {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.question-header h2 {
+  color: #2c3e50;
+  margin: 0;
+}
+
+.quality-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quality-label {
+  color: #666;
+  font-size: 14px;
+}
+
+.quality-score {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.quality-score.excellent {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.quality-score.good {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.quality-score.fair {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.question-content {
+  margin-bottom: 30px;
+}
+
+.question-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.option {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.option:hover:not(.selected):not(.correct):not(.incorrect) {
+  background: #f0f0f0;
+  border-color: #16a085;
+  transform: translateX(5px);
+}
+
+.option.selected {
+  background: #e3f2fd;
+  border-color: #16a085;
+  border-width: 3px;
+  font-weight: 600;
+}
+
+.option.correct {
+  background: #e8f5e9;
+  border-color: #27ae60;
+  font-weight: 600;
+}
+
+.option.incorrect {
+  background: #ffebee;
+  border-color: #e74c3c;
+  font-weight: 600;
+}
+
+.result-badge {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.correct-badge {
+  background: #27ae60;
+  color: white;
+}
+
+.incorrect-badge {
+  background: #e74c3c;
+  color: white;
+}
+
+.submit-button {
+  margin-top: 20px;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #16a085 0%, #27ae60 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.submit-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.result-section {
+  margin-top: 20px;
+}
+
+.result-message {
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.result-message.correct {
+  background: #e8f5e9;
+  color: #27ae60;
+  border: 2px solid #27ae60;
+}
+
+.result-message.incorrect {
+  background: #ffebee;
+  color: #e74c3c;
+  border: 2px solid #e74c3c;
+}
+
+.answer-badge {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #e8f5e9;
+  color: #27ae60;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 16px;
+}
+
+.answer-section,
+.guidance-section,
+.rubric-section,
+.requirements-section,
+.test-cases-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.answer-text {
+  margin-top: 10px;
+  padding: 15px;
+  background: white;
+  border-radius: 6px;
+  border-left: 4px solid #16a085;
+}
+
+.test-case {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-family: monospace;
+}
+
+.explanation {
+  margin-top: 20px;
+  padding: 15px;
+  background: #fff8e1;
+  border-radius: 8px;
+  border-left: 4px solid #f39c12;
+}
+
+.metadata-section {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.metadata-section h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.metadata-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.metadata-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metadata-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
