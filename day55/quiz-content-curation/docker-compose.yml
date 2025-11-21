@@ -6,7 +6,6 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - GEMINI_API_KEY=AIzaSyDGswqDT4wQw_bd4WZtIgYAawRDZ0Gisn8
       - DATABASE_URL=sqlite+aiosqlite:///./curation.db
     volumes:
       - ./backend:/app
