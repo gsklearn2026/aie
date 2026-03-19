@@ -1,6 +1,6 @@
 import React from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TrendingUp, Target, Clock, Brain } from 'lucide-react';
+import { Target, Clock, Brain } from 'lucide-react';
 
 function PerformanceMetrics({ data }) {
   if (!data || data.length === 0) {

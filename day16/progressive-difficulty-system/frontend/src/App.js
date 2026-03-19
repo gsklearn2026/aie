@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { Brain, TrendingUp, Target, Clock, Award, AlertCircle } from 'lucide-react';
+import { Brain, TrendingUp, Target, Clock, Award } from 'lucide-react';
 import DifficultySimulator from './components/DifficultySimulator';
 import PerformanceMetrics from './components/PerformanceMetrics';
 import './styles/cloudskills.css';
@@ -14,7 +13,7 @@ function App() {
   const [simulationData, setSimulationData] = useState([]);
   const [currentUser, setCurrentUser] = useState('demo_user_123');
 
-  const fetchUserState = async () => {
+  const fetchUserState = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_BASE}/user/${currentUser}/state`);
@@ -24,11 +23,11 @@ function App() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentUser]);
 
   useEffect(() => {
     fetchUserState();
-  }, [currentUser]);
+  }, [fetchUserState]);
 
   const handleSimulationUpdate = (newData) => {
     setSimulationData(prev => [...prev, newData]);
