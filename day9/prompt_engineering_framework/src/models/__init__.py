@@ -1,1 +1,0 @@
-"""Template models package"""
